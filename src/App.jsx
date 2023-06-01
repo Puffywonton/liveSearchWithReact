@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
+import LiveSearchContainer from './LiveSearchContainer'
+import axios from 'axios';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [searchResults, setSearchResults] = useState([]);
+  const [characters, setCharacters] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log('trying')
+        const { data } = await axios.get('https://swapi.dev/api/people/')
+        setCharacters(data.results)
+        console.log('done')
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const handleSearch = (searchTerm) => {
+    setSearchResults(searchTerm)
+    setTimeout(coucou, 1000)
+  };
+
+  const coucou = () => {
+    console.log('coucou')
+  }
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <h1>SWAPI Live Search</h1>
+      <LiveSearchContainer onSearch={handleSearch} />
+      <div className="results">
+        {characters.map(character => (
+          <div key={character.name}>
+                  {character.name}
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
 
 export default App
+
+
