@@ -95,12 +95,21 @@ button:focus-visible {
     transform: rotate(360deg);
   }
 }
-
+.results{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 .character-card{
-  background-color: darkgrey;
-  border: 1px solid black;
+  width: 50%;
+  background-color: #242424;
+  /* border: 1px solid #242424; */
   margin: 1rem;
   padding: 1rem;
+}
+
+.character-card h3{
+  margin: 0;
 }
 
 .input-search{
