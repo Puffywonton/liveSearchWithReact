@@ -2,19 +2,25 @@ import { useState } from 'react'
 import './App.css'
 import LiveSearchContainer from './LiveSearchContainer'
 import axios from 'axios';
+import CharacterCard from './CharacterCard';
 
 
 function App() {
   const [characters, setCharacters] = useState([])
+  const [loader, setLoader] = useState(false)
+
 
   const fetchData = async (searchTerm) => {
-    try {
-      console.log('trying')
+    try { // should i put the if before or after the try
+      if (searchTerm == '') {
+        setCharacters([])
+        setLoader(false)
+        return
+      }
       const url = 'https://swapi.dev/api/people/?search=' + searchTerm
-      console.log(url)
       const { data } = await axios.get(url)
       setCharacters(data.results)
-      console.log('done')
+      setLoader(false)
     } catch (error) {
       console.log(error)
     }
@@ -22,14 +28,21 @@ function App() {
     
   return (
     <>
-      <h1>SWAPI Live Search</h1>
-      <LiveSearchContainer onSearch={fetchData} />
-      <div className="results">
-        {characters.map(character => (
-          <div key={character.name}>
-                  {character.name}
+      <h1>SWAPI Characters Live Search</h1>
+      <LiveSearchContainer onSearch={fetchData} onLoad={setLoader} />
+      <div className="results-container">
+        {loader && <div className="lds-dual-ring"></div>}
+        {!loader &&
+          <div className="results">
+            {characters.map(character => (
+              <CharacterCard
+                key={character.name}
+                title={character.name}
+                mass={character.mass}
+              />
+            ))}
           </div>
-        ))}
+        }
       </div>
     </>
   )
