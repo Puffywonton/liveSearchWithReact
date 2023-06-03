@@ -30,7 +30,7 @@ function App() {
   return (
     <div className='mother'>
       <h1>Rick & Morty Character Search</h1>
-      <LiveSearchContainer onSearch={fetchData} onLoad={setLoader} />
+      <LiveSearchContainer onSearch={fetchData} onLoad={setLoader} /> 
       {loader && <div className="lds-dual-ring"></div>}
       {!loader &&
         <div className="results">
