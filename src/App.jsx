@@ -17,8 +17,9 @@ function App() {
         setLoader(false)
         return
       }
-      const url = 'https://swapi.dev/api/people/?search=' + searchTerm
+      const url = 'https://rickandmortyapi.com/api/character/?name=' + searchTerm
       const { data } = await axios.get(url)
+      console.log(data.results)
       setCharacters(data.results)
       setLoader(false)
     } catch (error) {
@@ -27,24 +28,21 @@ function App() {
   }
     
   return (
-    <>
-      <h1>SWAPI Characters Live Search</h1>
+    <div className='mother'>
+      <h1>Rick & Morty Character Search</h1>
       <LiveSearchContainer onSearch={fetchData} onLoad={setLoader} />
-      <div className="results-container">
-        {loader && <div className="lds-dual-ring"></div>}
-        {!loader &&
-          <div className="results">
-            {characters.map(character => (
-              <CharacterCard
-                key={character.name}
-                title={character.name}
-                mass={character.mass}
-              />
-            ))}
-          </div>
-        }
-      </div>
-    </>
+      {loader && <div className="lds-dual-ring"></div>}
+      {!loader &&
+        <div className="results">
+          {characters.map(character => (
+            <CharacterCard
+              character={character}
+              key={character.id}
+            />
+          ))}
+        </div>
+      }
+    </div>
   )
 }
 
